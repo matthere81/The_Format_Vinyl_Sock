@@ -1,5 +1,8 @@
+#!/usr/bin/env python3
 import requests
 from bs4 import BeautifulSoup
+import send_mail
+from datetime import date
 
 # Set URL and get page content
 urls = ["https://www.hellomerch.com/collections/the-format/products/dog-problems-standard-edition-12-double-black-vinyl",
@@ -22,11 +25,11 @@ for url in urls:
     title = soup.title.text
     # print(titles)
     if 'Dog' in title:
-        dog_problems = title
-        print("\n" + script_text + " copies remain of Dog Problems.")
+        dog_problems = "\n" + script_text + " copies remain of Dog Problems."
+        # print("\n" + script_text + " copies remain of Dog Problems.")
     else:
-        interventions = title
-        print("\n" + script_text + " copies remain of Interventions & Lullabies.")
+        interventions = "\n" + script_text + " copies remain of Interventions & Lullabies."
+        # print("\n" + script_text + " copies remain of Interventions & Lullabies.")
     
 
 url = "https://asbestosrecords.bigcartel.com/product/against-me-new-wave-lp?fbclid=IwAR2CLW9Hu402KkRh35gzibF0GmFX1L74SEvTbctEselXNswPMcn5a5R5_AA"
@@ -36,4 +39,7 @@ soup = BeautifulSoup(html_page.content, 'html.parser')
 stock = soup.find("em").text
 stock = str.split(stock,' - ', 1)[1]
 
-print("\n" + stock + "of Against Me - New Wave \n")
+new_wave = "\n" + stock + "of Against Me - New Wave \n"
+# print("\n" + stock + "of Against Me - New Wave \n")
+
+send_mail.send(dog_problems, interventions, new_wave )
