@@ -10,24 +10,30 @@ headers = {'User-Agent':'Mozilla/5.0 (Macintosh Intel Mac OS X 10_15_7) AppleWeb
     + '(KHTML, like Gecko) Version/15.5 Safari/605.1.15'}
 
 for url in urls:
-    # titles = []
+    
     html_page = requests.get(url)
     soup = BeautifulSoup(html_page.content, 'html.parser')
+
+    # script_text = soup.find("p", class_="product-vendor").text
+    script_text_before_split = soup.find("script", id="bold-subscriptions-platform-script")
+    script_text_before_split = str(script_text_before_split)
+    script_text = str.split(script_text_before_split,'inventory_quantity":', 1)[1]
+    script_text = str.split(script_text, ',"inventory_management"', 1)[0]
     title = soup.title.text
-    # titles.append(title)
     # print(titles)
     if 'Dog' in title:
         dog_problems = title
+        print("\n" + script_text + " copies remain of Dog Problems.")
     else:
         interventions = title
+        print("\n" + script_text + " copies remain of Interventions & Lullabies.")
+    
 
-# # script_text = soup.find("p", class_="product-vendor").text
-# script_text_before_split = soup.find("script", id="bold-subscriptions-platform-script")
-# script_text_before_split = str(script_text_before_split)
-# script_text = str.split(script_text_before_split, 'inventory_quantity":', 1)[1]
-# # script_text = str.split(script_text, '\'subscriptions\'', 1)[0]
-# script_text = str.split(script_text, ',"inventory_management"', 1)[0]
+url = "https://asbestosrecords.bigcartel.com/product/against-me-new-wave-lp?fbclid=IwAR2CLW9Hu402KkRh35gzibF0GmFX1L74SEvTbctEselXNswPMcn5a5R5_AA"
 
-# print(script_text + " remain in stock.")
+html_page = requests.get(url)
+soup = BeautifulSoup(html_page.content, 'html.parser')
+stock = soup.find("em").text
+stock = str.split(stock,' - ', 1)[1]
 
-
+print("\n" + stock + "of Against Me - New Wave \n")
